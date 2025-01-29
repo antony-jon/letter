@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 200vh;
+            margin: 0;
+            background: linear-gradient(180deg, #ffcccb, #ffb6c1);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 1.5s infinite;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .scroll-indicator p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .arrow {
+            font-size: 24px;
+            animation: arrowBounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        @keyframes arrowBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        .container {
+            position: fixed;
+            top: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .envelope {
+            position: relative;
+            width: 220px;
+            height: 160px;
+            background: #d9534f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            border: 4px solid white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background: #c9302c;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transition: transform 1s ease-out;
+        }
+
+        .body {
+            width: 100%;
+            height: 100%;
+            background: #d9534f;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: -100%;
+            width: 90%;
+            height: 130px;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #d9534f;
+            border-radius: 5px;
+            border: 4px solid #ff0000;
+            transition: bottom 1s ease-out 0.5s, box-shadow 0.5s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .letter p {
+            text-align: center;
+            padding: 10px;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0px 0px 10px rgba(255, 0, 0, 0.7); }
+            100% { text-shadow: 0px 0px 20px rgba(255, 140, 0, 1); }
+        }
+
+        .floating-animals {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .animal {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.9;
+            animation: floatUp 4s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scroll-indicator">
+        <p>Scroll Down 🎁</p>
+        <div class="arrow">⬇️</div>
+    </div>
+
+    <div class="container">
+        <div class="envelope">
+            <div class="flap"></div>
+            <div class="body"></div>
+            <div class="letter">
+                <p>🎉 Happy Birthday Dumbo! 🎂</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-animals"></div>
+
+    <script>
+        let lastScrollY = 0;
+
+        window.addEventListener("scroll", () => {
+            let scrollY = window.scrollY;
+            let flap = document.querySelector(".flap");
+            let letter = document.querySelector(".letter");
+            let scrollIndicator = document.querySelector(".scroll-indicator");
+
+            if (scrollY > 50) {
+                flap.style.transform = "rotateX(180deg)";
+                letter.style.bottom = "20px";
+                letter.style.boxShadow = "0px 4px 15px rgba(255, 140, 0, 0.7)";
+            } else {
+                flap.style.transform = "rotateX(0)";
+                letter.style.bottom = "-100%";
+                letter.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
+            }
+
+            if (scrollY > lastScrollY) {
+                scrollIndicator.style.opacity = "0";
+            } else if (scrollY < 50) {
+                scrollIndicator.style.opacity = "1";
+            }
+
+            lastScrollY = scrollY;
+        });
+
+        function createAnimal() {
+            const animals = ["🐶", "🐱", "🐼", "🐰", "🐵", "🦊", "🐨", "🐷"];
+            const animal = document.createElement("div");
+            animal.classList.add("animal");
+            animal.innerHTML = animals[Math.floor(Math.random() * animals.length)];
+            animal.style.left = `${Math.random() * 100}vw`;
+            animal.style.animationDuration = `${Math.random() * 4 + 3}s`;
+            document.querySelector(".floating-animals").appendChild(animal);
+
+            setTimeout(() => {
+                animal.remove();
+            }, 4000);
+        }
+
+        setInterval(createAnimal, 500);
+    </script>
+
+</body>
+</html>
