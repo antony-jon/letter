@@ -1,0 +1,19 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1 
+      - name: Build and deploy
+        run: |
+          # Replace these commands with your actual build and deployment steps
+          echo "Building..."
+          # Example: npm install && npm run build
+          echo "Deploying..."
+          # Example: ssh user@server "mkdir -p /path/to/deploy && scp -r ./dist user@server:/path/to/deploy"
